@@ -43,7 +43,7 @@ function App() {
           <Grid item xs={12}>
             <SearchBar onSubmit={handleSubmit}></SearchBar>
           </Grid>
-          <Grid item xs={7}>
+          <Grid item xs={6}>
             <MainVideo mainVideo={currentVideo}></MainVideo>
           </Grid>
           <Grid item xs={3}>

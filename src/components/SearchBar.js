@@ -13,12 +13,11 @@ import SearchIcon from "@material-ui/icons/Search";
 import MenuIcon from "@material-ui/icons/Menu";
 
 const useStyles = makeStyles((theme) => ({
-  App: {
-    flexGrow: 1,
-  },
   navi: {
-    width: "auto",
-    position: "static",
+    display:"flex",
+    justifyContent: "space-between",
+    width: "auto%",
+    position: "relative",
     backgroundColor: "red",
   },
   title: {
@@ -27,11 +26,11 @@ const useStyles = makeStyles((theme) => ({
   search: {
     position: "relative",
     borderRadius: 10,
-    width: "100%",
+    width: "40%",
     marginLeft: 0,
-    backgroundColor: fade("#fff", 0.15),
+    backgroundColor: fade("#fff", 0.2),
     "&:hover": {
-      backgroundColor: fade(theme.palette.common.white, 0.3),
+      backgroundColor: fade(theme.palette.common.white, 0.35),
     },
   },
   searchIcon: {
@@ -72,14 +71,12 @@ export default (props) => {
 
   const classes = useStyles();
   return (
-    <AppBar className={classes.navi}>
-      <Toolbar>
+    <AppBar position="static">
+      <Toolbar className={classes.navi}>
         <IconButton edge="start">
           <MenuIcon></MenuIcon>
         </IconButton>
-        <Typography className={classes.title} variant="h6">
-          Video Platform
-        </Typography>
+     
         <div className={classes.search}>
           <SearchIcon className={classes.searchIcon}></SearchIcon>
           <InputBase
@@ -89,6 +86,9 @@ export default (props) => {
             onKeyPress={handleSearch}
           ></InputBase>
         </div>
+        <Typography className={classes.title} variant="h6">
+          Video Platform
+        </Typography>
       </Toolbar>
     </AppBar>
   );

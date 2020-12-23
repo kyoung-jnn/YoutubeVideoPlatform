@@ -3,12 +3,11 @@ import { Paper, Typography } from "@material-ui/core";
 import YouTube from "react-youtube";
 
 const Video = (props) => {
-  const mainVideo = props.mainVideo
+  const mainVideo = props.mainVideo;
   console.log(mainVideo);
   const opts = {
-    height: "200%",
-    width: "100%",
     playerVars: {
+      width: '1000px',
       autoplay: 0,
     },
   };
@@ -18,11 +17,18 @@ const Video = (props) => {
     return (
       <React.Fragment>
         <Paper elevation={3}>
-          <YouTube videoId={mainVideo.id.videoId} opts={opts} onReady={_onReady} />
+          <YouTube
+            videoId={mainVideo.id.videoId}
+            opts={opts}
+            onReady={_onReady}
+            style={{ width:'100%' }}
+          />
         </Paper>
         <Paper elevation={6} style={{ padding: "10px" }}>
           <Typography variant="h5">{mainVideo.snippet.title}</Typography>
-          <Typography variant="subtitle1">{mainVideo.snippet.channelTitle}</Typography>
+          <Typography variant="subtitle1">
+            {mainVideo.snippet.channelTitle}
+          </Typography>
         </Paper>
       </React.Fragment>
     );

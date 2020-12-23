@@ -8,7 +8,7 @@ const SubVideo = (props) => {
   const renderVideoList = subVideos.map((video) => {
     return (
       <Grid>
-        <Paper style={{ cursor: "pointer" }}>
+        <Paper style={{ cursor: "pointer", marginBottom:'20px'}}>
           <img
             style={{ width: "100%" }}
             alt="thumbnail"
