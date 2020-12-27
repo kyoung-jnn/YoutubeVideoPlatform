@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import { makeStyles, Grid } from "@material-ui/core";
 import axios from "axios";
-import SearchBar from "./components/SearchBar.js";
-import MainVideo from "./components/MainVideo.js";
-import SubVideo from "./components/SubVideo.js";
+import MainVideo from "./MainVideo.js";
+import SubVideo from "./SubVideo.js";
 
 const useStyles = makeStyles((theme) => ({
   App: { justifyContent: "center" },
@@ -52,24 +51,14 @@ function App() {
   };
 
   return (
-    <Grid container spacing={10}>
-      <Grid item xs={12}>
-        <Grid container spacing={3} style={{ justifyContent: "center" }}>
-          <Grid item xs={12}>
-            <SearchBar onSubmit={handleSubmit}></SearchBar>
-          </Grid>
-          <Grid item xs={6}>
-            <MainVideo mainVideo={currentVideo}></MainVideo>
-          </Grid>
-          <Grid item xs={3}>
-            <SubVideo
-              subVideos={videos}
-              setMainVideo={setCurrentVideo}
-            ></SubVideo>
-          </Grid>
-        </Grid>
+    <React.Fragment>
+      <Grid item xs={6}>
+        <MainVideo mainVideo={currentVideo}></MainVideo>
       </Grid>
-    </Grid>
+      <Grid item xs={3}>
+        <SubVideo subVideos={videos} setMainVideo={setCurrentVideo}></SubVideo>
+      </Grid>
+    </React.Fragment>
   );
 }
 

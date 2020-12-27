@@ -1,18 +1,19 @@
 import React, { useState } from "react";
 import { makeStyles, Grid } from "@material-ui/core";
-import { Route, Link } from "react-router-dom";
+import { Route, Link, Switch } from "react-router-dom";
 import axios from "axios";
 import SearchBar from "./components/SearchBar.js";
-import MainVideo from "./components/MainVideo.js";
-import SubVideo from "./components/SubVideo.js";
+import VideoDetail from "./components/VideoDetail.js";
+import VideoMenu from "./components/VideoMenu.js";
 
 const useStyles = makeStyles((theme) => ({
   App: { justifyContent: "center" },
 }));
 
-function App() {
+function App(props) {
   const [videos, setVideos] = useState([]);
   const [currentVideo, setCurrentVideo] = useState(null);
+
   const handleSubmit = async (searchKeyword) => {
     axios
       .create({
@@ -32,6 +33,8 @@ function App() {
         setVideos(list);
         setCurrentVideo(list[0]);
       });
+
+    this.props.history.push("/videoDetail");
   };
 
   return (
@@ -41,6 +44,14 @@ function App() {
           <Grid item xs={12}>
             <SearchBar onSubmit={handleSubmit}></SearchBar>
           </Grid>
+          <Switch>
+            <Route path="/" component={VideoMenu} exact={true}></Route>
+            <Route
+              path="/videoDetail"
+              component={VideoDetail}
+              exact={true}
+            ></Route>
+          </Switch>
         </Grid>
       </Grid>
     </Grid>
