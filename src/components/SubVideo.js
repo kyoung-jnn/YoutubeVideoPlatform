@@ -1,6 +1,5 @@
 import React from "react";
 import { Paper, Grid, Typography } from "@material-ui/core";
-import YouTube from "react-youtube";
 
 const SubVideo = (props) => {
   const subVideos = props.subVideos;

@@ -1,9 +1,10 @@
-import React from "react";
-import { Paper, Typography } from "@material-ui/core";
+import React, { useState } from "react";
+import { Paper, Typography, Grid } from "@material-ui/core";
 import YouTube from "react-youtube";
 
 const Video = (props) => {
-  const mainVideo = props.mainVideo;
+  console.log("메인화면", props);
+  const [videos, setVideos] = useState(props.video);
 
   const opts = {
     width: "100%",
@@ -13,27 +14,43 @@ const Video = (props) => {
     },
   };
 
-  if (mainVideo == null) return <div>Loading...</div>;
-  else {
+  const renderVideoMenu = videos.map((video) => {
     return (
-      <React.Fragment>
-        <Paper elevation={3} style={{ position: "relative", display: "block" }}>
-          <YouTube
-            videoId={mainVideo.id.videoId}
-            opts={opts}
-            onReady={_onReady}
-            style={{ position: "absolute", width: "100%" }}
+      <Grid>
+        <Paper style={{ cursor: "pointer" }}>
+          <img
+            style={{ width: "100%" }}
+            alt="thumbnail"
+            src={video.snippet.thumbnails.medium.url}
+            onMouseDown
           />
         </Paper>
-        <Paper elevation={6} style={{ padding: "20px", fontWeight:'bold' }}>
-          <Typography variant="h5">{mainVideo.snippet.title}</Typography>
-          <Typography variant="subtitle">
-            {mainVideo.snippet.channelTitle}
+        <Paper style={{ padding: "10px", marginBottom: "20px" }}>
+          <Typography variant="h5" style={{ fontSize: "6px" }}>
+            {video.snippet.title}
           </Typography>
         </Paper>
-      </React.Fragment>
+      </Grid>
     );
-  }
+  });
+
+  return (
+    <React.Fragment>
+      <Grid item xs={2}>
+        {renderVideoMenu}
+      </Grid>
+    </React.Fragment>
+  );
+
+  // if (mainVideo == null) return <div>Loading...</div>;
+  // else {
+  //   return (
+  //     <React.Fragment>
+  //       <Grid item xs={6}>
+  //       </Grid>
+  //     </React.Fragment>
+  //   );
+  // }
 
   function _onReady(event) {
     event.target.pauseVideo();

@@ -17,27 +17,6 @@ function App() {
       .create({
         baseURL: "https://www.googleapis.com/youtube/v3/",
       })
-      .get("/search", {
-        params: {
-          part: "snippet",
-          maxResults: 5, // 가져올 동영상 개수
-          key: "AIzaSyA_6zSz_6DWbstFSBOs_4gncohnIsdAoXk", // api 키
-          q: searchKeyword,
-        },
-      })
-      .then((results) => {
-        const list = results.data.items;
-
-        setVideos(list);
-        setCurrentVideo(list[0]);
-      });
-
-    console.log(currentVideo);
-
-    axios
-      .create({
-        baseURL: "https://www.googleapis.com/youtube/v3/",
-      })
       .get("videos", {
         params: {
           part: "snippet,contentDetails,recordingDetails",

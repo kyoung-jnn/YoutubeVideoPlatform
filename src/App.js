@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { makeStyles, Grid } from "@material-ui/core";
-import { Route, Link, Switch } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 import axios from "axios";
 import SearchBar from "./components/SearchBar.js";
 import VideoDetail from "./components/VideoDetail.js";
@@ -13,6 +13,29 @@ const useStyles = makeStyles((theme) => ({
 function App(props) {
   const [videos, setVideos] = useState([]);
   const [currentVideo, setCurrentVideo] = useState(null);
+
+  // componentDidMount
+  // VideoMenu 에서 인기 동영상 불러오기
+  useEffect(() => {
+    axios
+      .create({
+       // baseURL: "https://www.googleapis.com/youtube/v3/",
+      })
+      .get("/videos", {
+        params: {
+          part: "snippet",
+          chart:"mostPopular",
+          maxResults: 10, // 가져올 동영상 개수
+          key: "AIzaSyAWgs3aZE3PyX2p0tL776GoBgMt3XNx71M", // api 키
+        },
+      })
+      .then((results) => {
+        const list = results.data.items;
+        console.log(list);
+
+        setVideos(list);
+      });
+  },[]);
 
   const handleSubmit = async (searchKeyword) => {
     axios
@@ -33,8 +56,6 @@ function App(props) {
         setVideos(list);
         setCurrentVideo(list[0]);
       });
-
-    this.props.history.push("/videoDetail");
   };
 
   return (
@@ -45,11 +66,10 @@ function App(props) {
             <SearchBar onSubmit={handleSubmit}></SearchBar>
           </Grid>
           <Switch>
-            <Route path="/" component={VideoMenu} exact={true}></Route>
+            <Route exact path="/" render={()=> <VideoMenu videos={videos}></VideoMenu>}></Route>
             <Route
-              path="/videoDetail"
+              exact path="/videoDetail"
               component={VideoDetail}
-              exact={true}
             ></Route>
           </Switch>
         </Grid>
