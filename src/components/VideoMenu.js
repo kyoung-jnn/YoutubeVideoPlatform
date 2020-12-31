@@ -1,60 +1,48 @@
 import React, { useState } from "react";
-import { Paper, Typography, Grid } from "@material-ui/core";
+import { Paper, Typography, Grid, makeStyles } from "@material-ui/core";
 import YouTube from "react-youtube";
 
+const useStyles = makeStyles((theme) => ({
+  video: {
+    padding: theme.spacing(2),
+  },
+}));
+
 const Video = (props) => {
-  console.log("메인화면", props);
-  const [videos, setVideos] = useState(props.video);
-
-  const opts = {
-    width: "100%",
-
-    playerVars: {
-      autoplay: 0,
-    },
-  };
+  const videos = props.videos;
+  const onClickVideo = props.onClickVideo;
+  
+  const classes = useStyles();
 
   const renderVideoMenu = videos.map((video) => {
     return (
-      <Grid>
-        <Paper style={{ cursor: "pointer" }}>
+      <Grid item xs={3}>
+        <div className={classes.video}>
           <img
-            style={{ width: "100%" }}
+            style={{ position: "relative", width: "100%", cursor: "pointer" }}
             alt="thumbnail"
             src={video.snippet.thumbnails.medium.url}
-            onMouseDown
+            onMouseDown={() => onClickVideo(video)}
           />
-        </Paper>
-        <Paper style={{ padding: "10px", marginBottom: "20px" }}>
-          <Typography variant="h5" style={{ fontSize: "6px" }}>
+          <Typography style={{ textAlign: "center" }} variant="body1">
             {video.snippet.title}
           </Typography>
-        </Paper>
+          <Typography
+            style={{
+              marginTop: "10px",
+              textAlign: "right",
+              fontWeight: "bold",
+            }}
+            variant="subtitle2"
+          >
+            {video.snippet.channelTitle}
+          </Typography>
+        </div>
       </Grid>
     );
   });
 
-  return (
-    <React.Fragment>
-      <Grid item xs={2}>
-        {renderVideoMenu}
-      </Grid>
-    </React.Fragment>
-  );
-
-  // if (mainVideo == null) return <div>Loading...</div>;
-  // else {
-  //   return (
-  //     <React.Fragment>
-  //       <Grid item xs={6}>
-  //       </Grid>
-  //     </React.Fragment>
-  //   );
-  // }
-
-  function _onReady(event) {
-    event.target.pauseVideo();
-  }
+  return <React.Fragment>{renderVideoMenu}</React.Fragment>;
 };
 
 export default Video;

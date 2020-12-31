@@ -8,26 +8,11 @@ const useStyles = makeStyles((theme) => ({
   App: { justifyContent: "center" },
 }));
 
-function App() {
+function VideoDetail(props) {
+  console.log(props);
+
   const [videos, setVideos] = useState([]);
   const [currentVideo, setCurrentVideo] = useState(null);
-
-  const handleSubmit = async (searchKeyword) => {
-    axios
-      .create({
-        baseURL: "https://www.googleapis.com/youtube/v3/",
-      })
-      .get("videos", {
-        params: {
-          part: "snippet,contentDetails,recordingDetails",
-          key: "AIzaSyA_6zSz_6DWbstFSBOs_4gncohnIsdAoXk", // api 키
-          id: currentVideo.id.videoId,
-        },
-      })
-      .then((results) => {
-        console.log(results);
-      });
-  };
 
   return (
     <React.Fragment>
@@ -41,4 +26,4 @@ function App() {
   );
 }
 
-export default App;
+export default VideoDetail;
