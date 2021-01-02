@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Paper, Typography, Grid, makeStyles } from "@material-ui/core";
-import YouTube from "react-youtube";
 
 const useStyles = makeStyles((theme) => ({
   video: {
@@ -10,6 +9,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Video = (props) => {
   const videos = props.videos;
+  console.log('videoMenu',videos)
   const onClickVideo = props.onClickVideo;
   
   const classes = useStyles();
@@ -22,7 +22,7 @@ const Video = (props) => {
             style={{ position: "relative", width: "100%", cursor: "pointer" }}
             alt="thumbnail"
             src={video.snippet.thumbnails.medium.url}
-            onMouseDown={() => onClickVideo(video)}
+            onMouseDown={() => onClickVideo(video.id)}
           />
           <Typography style={{ textAlign: "center" }} variant="body1">
             {video.snippet.title}

@@ -11,8 +11,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function App() {
-  const [videos, setVideos] = useState([]);
-  const [currentVideo, setCurrentVideo] = useState(null);
+  const [videos, setVideos] = useState([]); // 비디오들 정보 전부 저장
+  const [currentVideo, setCurrentVideo] = useState(null); // id만 저장
 
   const history = useHistory();
 
@@ -78,12 +78,12 @@ function App() {
   };
 
   // 동영상을 클릭했을 때
-  const handleClick = (video) => {
-    setCurrentVideo(video);
-    history.push(`/videoDetail/:${video}`);
+  const handleClick = (clickVideoId) => {
+    setCurrentVideo(clickVideoId);
+    history.push(`/videoDetail?v=${clickVideoId}`);
   };
 
-  // Query String
+  // Query String 적용해야함
   return (
     <Grid container>
       <Grid item xs={12}>
@@ -103,8 +103,7 @@ function App() {
             )}
           ></Route>
           <Route
-            path="/videoDetail/:videoId"
-            to={{p}}
+            path="/videoDetail"
             render={(props) => <VideoDetail {...props}></VideoDetail>}
           ></Route>
         </Switch>

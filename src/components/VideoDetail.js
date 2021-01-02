@@ -1,26 +1,31 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { makeStyles, Grid } from "@material-ui/core";
-import axios from "axios";
 import MainVideo from "./MainVideo.js";
 import SubVideo from "./SubVideo.js";
+import queryString from "query-string";
 
 const useStyles = makeStyles((theme) => ({
   App: { justifyContent: "center" },
 }));
 
 function VideoDetail(props) {
-  console.log(props);
-
   const [videos, setVideos] = useState([]);
-  const [currentVideo, setCurrentVideo] = useState(null);
+  const [mainVideoId, setMainVideoId] = useState(null);
+
+  const query = queryString.parse(props.location.search);
+  const videoId = query.v;
+
+  useEffect(() => {
+    setMainVideoId(videoId);
+  });
 
   return (
     <React.Fragment>
       <Grid item xs={6}>
-        <MainVideo mainVideo={currentVideo}></MainVideo>
+        <MainVideo mainVideoId={mainVideoId}></MainVideo>
       </Grid>
       <Grid item xs={3}>
-        <SubVideo subVideos={videos} setMainVideo={setCurrentVideo}></SubVideo>
+        {/* <SubVideo subVideos={videos} setMainVideo={setMainVideoId}></SubVideo> */}
       </Grid>
     </React.Fragment>
   );
