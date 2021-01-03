@@ -6,26 +6,35 @@ import queryString from "query-string";
 
 const useStyles = makeStyles((theme) => ({
   App: { justifyContent: "center" },
+  mainVideo: {
+    padding: theme.spacing(2.2),
+  },
+  subVideos: {
+    padding: theme.spacing(2),
+  },
 }));
 
 function VideoDetail(props) {
   const [videos, setVideos] = useState([]);
   const [mainVideoId, setMainVideoId] = useState(null);
 
-  const query = queryString.parse(props.location.search);
-  const videoId = query.v;
-
   useEffect(() => {
+    const query = queryString.parse(props.location.search);
+    const videoId = query.v;
     setMainVideoId(videoId);
   });
 
+  const classes = useStyles();
   return (
     <React.Fragment>
-      <Grid item xs={6}>
+      <Grid className={classes.mainVideo} item xs={8}>
         <MainVideo mainVideoId={mainVideoId}></MainVideo>
       </Grid>
-      <Grid item xs={3}>
-        {/* <SubVideo subVideos={videos} setMainVideo={setMainVideoId}></SubVideo> */}
+      <Grid className={classes.subVideos} item xs={3}>
+        <SubVideo
+          mainVideoId={mainVideoId}
+          setMainVideoId={setMainVideoId}
+        ></SubVideo>
       </Grid>
     </React.Fragment>
   );

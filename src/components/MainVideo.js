@@ -4,12 +4,10 @@ import axios from "axios";
 import YouTube from "react-youtube";
 
 const Video = (props) => {
-  const mainVideoId = props.mainVideoId;
   const [mainVideo, setMainVideo] = useState(null);
-  console.log("mainVideo", mainVideo);
 
   useEffect(() => {
-    if (mainVideoId != null) {
+    if (props.mainVideoId != null) {
       axios
         .create({
           baseURL: "https://www.googleapis.com/youtube/v3/",
@@ -17,18 +15,17 @@ const Video = (props) => {
         .get("/videos", {
           params: {
             part: "snippet",
-            id: String(mainVideoId),
+            id: props.mainVideoId,
             key: "AIzaSyAWgs3aZE3PyX2p0tL776GoBgMt3XNx71M", // api 키
           },
         })
         .then((result) => {
-          console.log(result);
           const video = result.data.items[0];
           setMainVideo(video);
         });
     }
-  },[]);
-  
+  }, [props.mainVideoId]);
+
   const opts = {
     width: "100%",
     playerVars: {
@@ -42,7 +39,7 @@ const Video = (props) => {
       <React.Fragment>
         <Paper elevation={3} style={{ position: "relative", display: "block" }}>
           <YouTube
-            videoId={mainVideo.id.videoId}
+            videoId={mainVideo.id}
             opts={opts}
             onReady={_onReady}
             style={{ position: "absolute", width: "100%" }}

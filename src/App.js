@@ -83,7 +83,6 @@ function App() {
     history.push(`/videoDetail?v=${clickVideoId}`);
   };
 
-  // Query String 적용해야함
   return (
     <Grid container>
       <Grid item xs={12}>
