@@ -5,7 +5,6 @@ import YouTube from "react-youtube";
 
 const Video = (props) => {
   const [mainVideo, setMainVideo] = useState(null);
-
   useEffect(() => {
     if (props.mainVideoId != null) {
       axios
@@ -14,13 +13,15 @@ const Video = (props) => {
         })
         .get("/videos", {
           params: {
-            part: "snippet",
+            part: "snippet,statistics,recordingDetails",
             id: props.mainVideoId,
             key: "AIzaSyAWgs3aZE3PyX2p0tL776GoBgMt3XNx71M", // api 키
           },
         })
         .then((result) => {
           const video = result.data.items[0];
+          console.log(video);
+
           setMainVideo(video);
         });
     }
@@ -37,18 +38,22 @@ const Video = (props) => {
   else {
     return (
       <React.Fragment>
-        <Paper elevation={3} style={{ position: "relative", display: "block" }}>
+        <div>
           <YouTube
             videoId={mainVideo.id}
             opts={opts}
             onReady={_onReady}
-            style={{ position: "absolute", width: "100%" }}
+            style={{ position: "relative" }}
           />
-        </Paper>
-        <Paper elevation={6} style={{ padding: "20px", fontWeight: "bold" }}>
+        </div>
+        <Paper elevation={6} style={{ padding: "20px" }}>
           <Typography variant="h5">{mainVideo.snippet.title}</Typography>
-          <Typography variant="subtitle">
-            {mainVideo.snippet.channelTitle}
+          <Typography>{mainVideo.snippet.channelTitle}</Typography>
+          <Typography>
+            조회수 {mainVideo.statistics.viewCount}회 /{" "}
+            {mainVideo.snippet.publishedAt.split("-")[0] +
+              mainVideo.snippet.publishedAt.split("-")[1] +
+              mainVideo.snippet.publishedAt.split("-")[2].split("T")[0]}
           </Typography>
         </Paper>
       </React.Fragment>
