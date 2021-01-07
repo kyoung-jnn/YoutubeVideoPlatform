@@ -3,7 +3,7 @@ import {
   makeStyles,
   AppBar,
   Toolbar,
-  Typography,
+  Button,
   InputBase,
   fade,
   IconButton,
@@ -14,14 +14,20 @@ import MenuIcon from "@material-ui/icons/Menu";
 
 const useStyles = makeStyles((theme) => ({
   navi: {
-    display:"flex",
+    display: "flex",
     justifyContent: "space-between",
-    width: "auto%",
+    width: "auto",
     position: "relative",
     backgroundColor: "red",
   },
+  menu: {
+    color: "white",
+  },
   title: {
     display: "block",
+    fontSize: "17px",
+    fontWeight: "bold",
+    color: "white",
   },
   search: {
     position: "relative",
@@ -73,10 +79,10 @@ export default (props) => {
   return (
     <AppBar position="static">
       <Toolbar className={classes.navi}>
-        <IconButton edge="start">
+        <IconButton className={classes.menu} edge="start">
           <MenuIcon></MenuIcon>
         </IconButton>
-     
+
         <div className={classes.search}>
           <SearchIcon className={classes.searchIcon}></SearchIcon>
           <InputBase
@@ -86,9 +92,9 @@ export default (props) => {
             onKeyPress={handleSearch}
           ></InputBase>
         </div>
-        <Typography className={classes.title} variant="h6">
+        <Button className={classes.title} onClick={props.onGoHome}>
           Video Platform 🎬
-        </Typography>
+        </Button>
       </Toolbar>
     </AppBar>
   );

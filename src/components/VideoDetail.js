@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function VideoDetail(props) {
+const VideoDetail = (props) => {
   const [videos, setVideos] = useState([]);
   const [mainVideoId, setMainVideoId] = useState(null);
 

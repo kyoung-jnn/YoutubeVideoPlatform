@@ -37,8 +37,8 @@ const SubVideo = (props) => {
             onMouseDown={() => setMainVideoId(video.id)}
           />
         </Paper>
-        <Paper style={{ padding: "10px", marginBottom: "20px" }}>
-          <Typography variant="h5" style={{ fontSize: "6px" }}>
+        <Paper style={{ padding: "5px", marginBottom: "20px" }}>
+          <Typography variant="caption" style={{ fontWeight:'bold' }}>
             {video.snippet.title}
           </Typography>
         </Paper>

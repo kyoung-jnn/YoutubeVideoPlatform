@@ -1,10 +1,24 @@
 import React, { useEffect, useState } from "react";
-import { Paper, Typography } from "@material-ui/core";
+import { Paper, Typography, makeStyles } from "@material-ui/core";
 import axios from "axios";
 import YouTube from "react-youtube";
 
+const useStyles = makeStyles((theme) => ({
+  evaluationText: {
+    marginTop: 5,
+    marginBottom: 10,
+  },
+  nationText: {
+    marginTop: 10,
+    fontWeight: "bold",
+  },
+}));
+
 const Video = (props) => {
   const [mainVideo, setMainVideo] = useState(null);
+
+  const classes = useStyles();
+
   useEffect(() => {
     if (props.mainVideoId != null) {
       axios
@@ -43,27 +57,36 @@ const Video = (props) => {
             videoId={mainVideo.id}
             opts={opts}
             onReady={_onReady}
-            style={{ position: "relative" }}
+            style={{ display: "flex" }}
           />
         </div>
-        <Paper elevation={6} style={{ padding: "20px", display: "flex" }}>
-          <div style={{ width: "50%" }}>
-            <Typography variant="h5">{mainVideo.snippet.title}</Typography>
-            <Typography>{mainVideo.snippet.channelTitle}</Typography>
+        <Paper
+          elevation={6}
+          style={{
+            padding: "20px",
+          }}
+        >
+          <div style={{ width: "100%" }}>
+            <Typography style={{ fontWeight: "bold" }} variant="h5">
+              {mainVideo.snippet.title}
+            </Typography>
+            <Typography className={classes.evaluationText} align="right">
+              👍 {mainVideo.statistics.likeCount} 👎{" "}
+              {mainVideo.statistics.dislikeCount}
+            </Typography>
+            <Typography style={{ fontWeight: "bold" }} variant="h6">
+              {mainVideo.snippet.channelTitle}
+            </Typography>
             <Typography>
-              조회수 {mainVideo.statistics.viewCount}회 /{" "}
+              조회수 {mainVideo.statistics.viewCount}회 | 게시일{" "}
               {mainVideo.snippet.publishedAt.split("-")[0] +
                 mainVideo.snippet.publishedAt.split("-")[1] +
                 mainVideo.snippet.publishedAt.split("-")[2].split("T")[0]}
             </Typography>
 
-            <Typography>
+            <Typography className={classes.nationText} color="secondary" variant="h5" align="right">
               국가: {mainVideo.snippet.defaultAudioLanguage}
             </Typography>
-          </div>
-          <div style={{ width: "50%" }}>
-            <Typography>👍</Typography>
-            <Typography>👎</Typography>
           </div>
         </Paper>
       </React.Fragment>

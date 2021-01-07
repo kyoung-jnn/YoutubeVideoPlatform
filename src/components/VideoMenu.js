@@ -23,7 +23,11 @@ const Video = (props) => {
             alt="thumbnail"
             src={video.snippet.thumbnails.medium.url}
             onMouseDown={() => {
-              onClickVideo(video.id);
+              if (typeof video.id === "object") {
+                onClickVideo(video.id.videoId);
+              } else {
+                onClickVideo(video.id);
+              }
             }}
           />
           <Typography style={{ textAlign: "center" }} variant="body1">

@@ -56,8 +56,13 @@ function App() {
     //   });
   }, []);
 
+  const handleGoHome = () => {
+    history.push(`/`);
+  };
   // 검색을 했을 때
   const handleSubmit = async (searchKeyword) => {
+    history.push(`/`);
+
     axios
       .create({
         baseURL: "https://www.googleapis.com/youtube/v3/",
@@ -86,7 +91,7 @@ function App() {
   return (
     <Grid container>
       <Grid item xs={12}>
-        <SearchBar onSubmit={handleSubmit}></SearchBar>
+        <SearchBar onGoHome={handleGoHome} onSubmit={handleSubmit}></SearchBar>
       </Grid>
       <Grid container xs={12} spacing={0} justify="space-around">
         <Switch>
