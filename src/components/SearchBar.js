@@ -87,7 +87,7 @@ export default (props) => {
           ></InputBase>
         </div>
         <Typography className={classes.title} variant="h6">
-          Video Platform
+          Video Platform 🎬
         </Typography>
       </Toolbar>
     </AppBar>

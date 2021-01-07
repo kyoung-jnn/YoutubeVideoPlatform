@@ -34,7 +34,7 @@ const Video = (props) => {
     },
   };
 
-  if (mainVideo == null) return <div>Loading...</div>;
+  if (mainVideo == null) return <div>⏳...</div>;
   else {
     return (
       <React.Fragment>
@@ -46,15 +46,25 @@ const Video = (props) => {
             style={{ position: "relative" }}
           />
         </div>
-        <Paper elevation={6} style={{ padding: "20px" }}>
-          <Typography variant="h5">{mainVideo.snippet.title}</Typography>
-          <Typography>{mainVideo.snippet.channelTitle}</Typography>
-          <Typography>
-            조회수 {mainVideo.statistics.viewCount}회 /{" "}
-            {mainVideo.snippet.publishedAt.split("-")[0] +
-              mainVideo.snippet.publishedAt.split("-")[1] +
-              mainVideo.snippet.publishedAt.split("-")[2].split("T")[0]}
-          </Typography>
+        <Paper elevation={6} style={{ padding: "20px", display: "flex" }}>
+          <div style={{ width: "50%" }}>
+            <Typography variant="h5">{mainVideo.snippet.title}</Typography>
+            <Typography>{mainVideo.snippet.channelTitle}</Typography>
+            <Typography>
+              조회수 {mainVideo.statistics.viewCount}회 /{" "}
+              {mainVideo.snippet.publishedAt.split("-")[0] +
+                mainVideo.snippet.publishedAt.split("-")[1] +
+                mainVideo.snippet.publishedAt.split("-")[2].split("T")[0]}
+            </Typography>
+
+            <Typography>
+              국가: {mainVideo.snippet.defaultAudioLanguage}
+            </Typography>
+          </div>
+          <div style={{ width: "50%" }}>
+            <Typography>👍</Typography>
+            <Typography>👎</Typography>
+          </div>
         </Paper>
       </React.Fragment>
     );
