@@ -1,12 +1,6 @@
 import React, { useState } from "react";
 import { Paper, Typography, Grid, makeStyles } from "@material-ui/core";
 
-const useStyles = makeStyles((theme) => ({
-  video: {
-    padding: theme.spacing(2),
-  },
-}));
-
 const Video = (props) => {
   const videos = props.videos;
   console.log("videoMenu", videos);
@@ -50,5 +44,11 @@ const Video = (props) => {
 
   return <React.Fragment>{renderVideoMenu}</React.Fragment>;
 };
+
+const useStyles = makeStyles((theme) => ({
+  video: {
+    padding: theme.spacing(2),
+  },
+}));
 
 export default Video;

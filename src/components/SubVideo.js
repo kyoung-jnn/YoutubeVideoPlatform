@@ -17,7 +17,7 @@ const SubVideo = (props) => {
           chart: "mostPopular",
           videoCategoryId: 24,
           regionCode: "kr",
-          key: "AIzaSyAWgs3aZE3PyX2p0tL776GoBgMt3XNx71M", // api 키
+          key: process.env.REACT_APP_YOUTUBE_API_KEY, // api 키
         },
       })
       .then((results) => {

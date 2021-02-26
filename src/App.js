@@ -1,14 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { makeStyles, Grid } from "@material-ui/core";
+import { Grid } from "@material-ui/core";
 import { Route, Switch, useHistory } from "react-router-dom";
 import axios from "axios";
 import SearchBar from "./components/SearchBar.js";
 import VideoDetail from "./components/VideoDetail.js";
 import VideoMenu from "./components/VideoMenu.js";
-
-const useStyles = makeStyles((theme) => ({
-  App: { justifyContent: "center" },
-}));
 
 function App() {
   const [videos, setVideos] = useState([]); // 비디오들 정보 전부 저장

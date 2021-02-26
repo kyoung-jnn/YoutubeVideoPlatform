@@ -12,6 +12,44 @@ import {
 import SearchIcon from "@material-ui/icons/Search";
 import MenuIcon from "@material-ui/icons/Menu";
 
+export default (props) => {
+  const [searchVideo, setSearchVideo] = useState();
+
+  const handleChange = (event) => {
+    setSearchVideo(event.target.value);
+  };
+
+  const handleSearch = (event) => {
+    if (event.key === "Enter") {
+      props.onSubmit(searchVideo);
+    }
+  };
+
+  const classes = useStyles();
+  return (
+    <AppBar position="static">
+      <Toolbar className={classes.navi}>
+        <IconButton className={classes.menu} edge="start">
+          <MenuIcon></MenuIcon>
+        </IconButton>
+
+        <div className={classes.search}>
+          <SearchIcon className={classes.searchIcon}></SearchIcon>
+          <InputBase
+            className={classes.searchInput}
+            placeholder="검색..."
+            onChange={handleChange}
+            onKeyPress={handleSearch}
+          ></InputBase>
+        </div>
+        <Button className={classes.title} onClick={props.onGoHome}>
+          Video Platform 🎬
+        </Button>
+      </Toolbar>
+    </AppBar>
+  );
+};
+
 const useStyles = makeStyles((theme) => ({
   navi: {
     display: "flex",
@@ -61,41 +99,3 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(3),
   },
 }));
-
-export default (props) => {
-  const [searchVideo, setSearchVideo] = useState();
-
-  const handleChange = (event) => {
-    setSearchVideo(event.target.value);
-  };
-
-  const handleSearch = (event) => {
-    if (event.key === "Enter") {
-      props.onSubmit(searchVideo);
-    }
-  };
-
-  const classes = useStyles();
-  return (
-    <AppBar position="static">
-      <Toolbar className={classes.navi}>
-        <IconButton className={classes.menu} edge="start">
-          <MenuIcon></MenuIcon>
-        </IconButton>
-
-        <div className={classes.search}>
-          <SearchIcon className={classes.searchIcon}></SearchIcon>
-          <InputBase
-            className={classes.searchInput}
-            placeholder="검색..."
-            onChange={handleChange}
-            onKeyPress={handleSearch}
-          ></InputBase>
-        </div>
-        <Button className={classes.title} onClick={props.onGoHome}>
-          Video Platform 🎬
-        </Button>
-      </Toolbar>
-    </AppBar>
-  );
-};

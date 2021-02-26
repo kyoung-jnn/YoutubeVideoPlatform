@@ -1,11 +1,9 @@
-import React from "react";
-
 var search = require("youtube-search");
 
 export default (searchKeyword) => {
   var opts = {
     maxResults: 10,
-    key: "AIzaSyBXLiAmMASCU1-BdRNgYVnQ7SgLf5qL684",
+    key: process.env.REACT_APP_YOUTUBE_API_KEY,
   };
 
   search(searchKeyword, opts, function (err, results) {

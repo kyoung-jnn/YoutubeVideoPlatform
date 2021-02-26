@@ -3,17 +3,6 @@ import { Paper, Typography, makeStyles } from "@material-ui/core";
 import axios from "axios";
 import YouTube from "react-youtube";
 
-const useStyles = makeStyles((theme) => ({
-  evaluationText: {
-    marginTop: 5,
-    marginBottom: 10,
-  },
-  nationText: {
-    marginTop: 10,
-    fontWeight: "bold",
-  },
-}));
-
 const Video = (props) => {
   const [mainVideo, setMainVideo] = useState(null);
 
@@ -29,7 +18,7 @@ const Video = (props) => {
           params: {
             part: "snippet,statistics,recordingDetails",
             id: props.mainVideoId,
-            key: "AIzaSyAWgs3aZE3PyX2p0tL776GoBgMt3XNx71M", // api 키
+            key: process.env.REACT_APP_YOUTUBE_API_KEY, // api 키
           },
         })
         .then((result) => {
@@ -84,7 +73,12 @@ const Video = (props) => {
                 mainVideo.snippet.publishedAt.split("-")[2].split("T")[0]}
             </Typography>
 
-            <Typography className={classes.nationText} color="secondary" variant="h5" align="right">
+            <Typography
+              className={classes.nationText}
+              color="secondary"
+              variant="h5"
+              align="right"
+            >
               국가: {mainVideo.snippet.defaultAudioLanguage}
             </Typography>
           </div>
@@ -97,5 +91,16 @@ const Video = (props) => {
     event.target.pauseVideo();
   }
 };
+
+const useStyles = makeStyles((theme) => ({
+  evaluationText: {
+    marginTop: 5,
+    marginBottom: 10,
+  },
+  nationText: {
+    marginTop: 10,
+    fontWeight: "bold",
+  },
+}));
 
 export default Video;
