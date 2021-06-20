@@ -9,15 +9,12 @@ import VideoMenu from "./components/VideoMenu.js";
 function App() {
   const [menuState, setMenuState] = useState({ videos: [], channels: [] }); // 비디오들 정보 전부 저장
   const [currentVideo, setCurrentVideo] = useState(null); // id만 저장
-  var channelList = [];
 
   const history = useHistory();
 
-  // componentDidMount
   // VideoMenu에 인기 동영상 불러오기
   useEffect(() => {
     console.log("비디오 탐색");
-    console.log(menuState);
     axios
       .create({
         baseURL: "https://www.googleapis.com/youtube/v3/",
@@ -33,11 +30,11 @@ function App() {
       })
       .then((results) => {
         const list = results.data.items;
-        setMenuState({ videos: list, ...menuState });
+        setMenuState({ ...menuState, videos: list });
       })
       .then(() => {
         console.log("채널 탐색");
-        console.log(menuState);
+        var channelList = [];
 
         menuState.videos.map((video) => {
           let channelId = video.snippet.channelId;
@@ -56,16 +53,19 @@ function App() {
               channelList.push(results.data);
               if (channelList.length == 12) {
                 console.log("채널 저장", channelList);
-                setMenuState({ channels: channelList, ...menuState });
+                setMenuState({ ...menuState, channels: channelList });
               }
             });
         });
+
+        console.log(menuState);
       });
   }, []);
 
-  const handleGoHome = () => {
+  const handleBackToHome = () => {
     history.push(`/`);
   };
+
   // 검색을 했을 때
   const handleSubmit = async (searchKeyword) => {
     history.push(`/`);
@@ -98,25 +98,28 @@ function App() {
   return (
     <Grid container>
       <Grid item xs={12}>
-        <SearchBar onGoHome={handleGoHome} onSubmit={handleSubmit}></SearchBar>
+        <SearchBar
+          onGoHome={handleBackToHome}
+          onSubmit={handleSubmit}
+        ></SearchBar>
       </Grid>
       <Grid container justify="space-around">
         <Switch>
           <Route
             exact
             path="/"
-            // render={(props) => (
-            //   <VideoMenu
-            //     videos={videos}
-            //     onClickVideo={handleClick}
-            //     {...props}
-            //   ></VideoMenu>
-            // )}
+            render={(props) => (
+              <VideoMenu
+                videos={menuState.videos}
+                onClickVideo={handleClick}
+                {...props}
+              ></VideoMenu>
+            )}
           ></Route>
-          {/* <Route
+          <Route
             path="/videoDetail"
             render={(props) => <VideoDetail {...props}></VideoDetail>}
-          ></Route> */}
+          ></Route>
         </Switch>
       </Grid>
     </Grid>

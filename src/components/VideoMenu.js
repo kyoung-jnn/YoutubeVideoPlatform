@@ -1,10 +1,9 @@
-import React, { useState } from "react";
-import { Paper, Typography, Grid, makeStyles, Avatar } from "@material-ui/core";
+import React, { Fragment, useState } from "react";
+import { Typography, Grid, makeStyles, Avatar } from "@material-ui/core";
 
-const Video = (props) => {
-  const videos = props.videos.videos;
+const VideoMenu = (props) => {
+  const videos = props.videos;
   const onClickVideo = props.onClickVideo;
-  console.log(videos)
 
   const classes = useStyles();
 
@@ -59,7 +58,11 @@ const Video = (props) => {
     );
   });
 
-  return <React.Fragment>{renderVideoMenu}</React.Fragment>;
+  return (
+    <React.Fragment>
+      {videos.length != 0 ? renderVideoMenu : <Fragment></Fragment>}
+    </React.Fragment>
+  );
 };
 
 const useStyles = makeStyles((theme) => ({
@@ -84,4 +87,4 @@ const useStyles = makeStyles((theme) => ({
   videoText: {},
 }));
 
-export default Video;
+export default VideoMenu;
