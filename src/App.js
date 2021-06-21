@@ -6,6 +6,10 @@ import SearchBar from "./components/SearchBar.js";
 import VideoDetail from "./components/VideoDetail_component/VideoDetail.js";
 import VideoMenu from "./components/VideoMenu.js";
 
+async function axiosVideoList(){
+  await  
+}
+
 function App() {
   const [menuState, setMenuState] = useState({ videos: [], channels: [] }); // 비디오들 정보 전부 저장
   const [currentVideo, setCurrentVideo] = useState(null); // id만 저장
@@ -117,7 +121,7 @@ function App() {
             )}
           ></Route>
           <Route
-            path="/videoDetail"
+            path="/watch"
             render={(props) => <VideoDetail {...props}></VideoDetail>}
           ></Route>
         </Switch>
