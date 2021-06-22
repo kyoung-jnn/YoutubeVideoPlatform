@@ -7,7 +7,45 @@ import VideoDetail from "./components/VideoDetail_component/VideoDetail.js";
 import VideoMenu from "./components/VideoMenu.js";
 
 async function axiosVideoList(){
-  await  
+  const results = await axios.create({
+    baseURL: "https://www.googleapis.com/youtube/v3/",
+  }).get("/videos", {
+    params: {
+      part: "snippet,statistics,recordingDetails,contentDetails",
+      chart: "mostPopular",
+      maxResults: 12, // 가져올 동영상 개수
+      regionCode: "kr",
+      key: process.env.REACT_APP_YOUTUBE_API_KEY, // api 키
+    },
+  })
+  setMenuState({ ...menuState, videos: results.data.items });
+}
+
+async function axiosChannelList(){
+  console.log("채널 탐색");
+  var channelList = [];
+
+  menuState.videos.map((video) => {
+    let channelId = video.snippet.channelId;
+    axios
+      .create({
+        baseURL: "https://www.googleapis.com/youtube/v3/",
+      })
+      .get("/channels", {
+        params: {
+          part: "snippet",
+          id: { channelId },
+          key: "AIzaSyAWgs3aZE3PyX2p0tL776GoBgMt3XNx71M", // api 키
+        },
+      })
+      .then((results) => {
+        channelList.push(results.data);
+        if (channelList.length == 12) {
+          console.log("채널 저장", channelList);
+          setMenuState({ ...menuState, channels: channelList });
+        }
+      });
+  });
 }
 
 function App() {
@@ -19,51 +57,9 @@ function App() {
   // VideoMenu에 인기 동영상 불러오기
   useEffect(() => {
     console.log("비디오 탐색");
-    axios
-      .create({
-        baseURL: "https://www.googleapis.com/youtube/v3/",
-      })
-      .get("/videos", {
-        params: {
-          part: "snippet,statistics,recordingDetails,contentDetails",
-          chart: "mostPopular",
-          maxResults: 12, // 가져올 동영상 개수
-          regionCode: "kr",
-          key: process.env.REACT_APP_YOUTUBE_API_KEY, // api 키
-        },
-      })
-      .then((results) => {
-        const list = results.data.items;
-        setMenuState({ ...menuState, videos: list });
-      })
-      .then(() => {
-        console.log("채널 탐색");
-        var channelList = [];
-
-        menuState.videos.map((video) => {
-          let channelId = video.snippet.channelId;
-          axios
-            .create({
-              baseURL: "https://www.googleapis.com/youtube/v3/",
-            })
-            .get("/channels", {
-              params: {
-                part: "snippet",
-                id: { channelId },
-                key: "AIzaSyAWgs3aZE3PyX2p0tL776GoBgMt3XNx71M", // api 키
-              },
-            })
-            .then((results) => {
-              channelList.push(results.data);
-              if (channelList.length == 12) {
-                console.log("채널 저장", channelList);
-                setMenuState({ ...menuState, channels: channelList });
-              }
-            });
-        });
-
-        console.log(menuState);
-      });
+    
+    axiosVideoList();
+    axiosChannelList();
   }, []);
 
   const handleBackToHome = () => {
