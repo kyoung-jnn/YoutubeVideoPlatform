@@ -18,6 +18,7 @@ export default (props) => {
       props.onSubmit(searchVideo);
     }
   };
+
   return (
     <AppBar position="static">
       <Navi>
@@ -31,7 +32,7 @@ export default (props) => {
             onKeyPress={handleSearch}
           ></SearchInput>
         </Search>
-        <MenuTtile onClick={props.onGoHome}>Video Platform 🎬</MenuTtile>
+        <MenuTtile onClick={props.onGoHome}>JinTube 🎬</MenuTtile>
       </Navi>
     </AppBar>
   );
@@ -52,9 +53,10 @@ const MenuTtile = styled(Button)`
 `;
 
 const Search = styled.div`
-  position: relative;
+  display: flex;
+  align-items: center;
   width: 40%;
-  height: 100%;
+  height: 3rem;
   transition: background-color ease 0.7s;
   &:hover {
     background-color: #d63031;

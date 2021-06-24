@@ -2,10 +2,13 @@ import React, { useState, useEffect } from "react";
 import { Grid } from "@material-ui/core";
 import { Route, Switch, useHistory } from "react-router-dom";
 import axios from "axios";
+import styled from "styled-components";
+
 import SearchBar from "./components/SearchBar.js";
 import VideoDetail from "./components/VideoDetail_component/VideoDetail.js";
 import VideoMenu from "./components/VideoMenu.js";
 import SideBar from "./components/SideBar.js";
+import { Fragment } from "react";
 
 async function axiosData(menuState, setMenuState) {
   let channelList = [];
@@ -63,7 +66,7 @@ function App() {
     history.push(`/`);
   };
 
-  const handleSubmit = async (searchKeyword) => {
+  const handleSubmit = (searchKeyword) => {
     history.push(`/`);
 
     axios
@@ -91,28 +94,26 @@ function App() {
   };
 
   return (
-    <Grid container>
-      <Grid item xs={12}>
-        <SearchBar
-          onGoHome={handleBackToHome}
-          onSubmit={handleSubmit}
-        ></SearchBar>
-      </Grid>
-
-      <Grid container justify="space-around">
-        <SideBar></SideBar>
-
+    <main>
+      <SearchBar
+        onGoHome={handleBackToHome}
+        onSubmit={handleSubmit}
+      ></SearchBar>
+      <BottomContainer>
         <Switch>
           <Route
             exact
             path="/"
             render={(props) => (
-              <VideoMenu
-                videos={menuState.videos}
-                channels={menuState.channels}
-                onClickVideo={handleClick}
-                {...props}
-              ></VideoMenu>
+              <Fragment>
+                <SideBar></SideBar>
+                <VideoMenu
+                  videos={menuState.videos}
+                  channels={menuState.channels}
+                  onClickVideo={handleClick}
+                  {...props}
+                ></VideoMenu>
+              </Fragment>
             )}
           ></Route>
           <Route
@@ -120,9 +121,14 @@ function App() {
             render={(props) => <VideoDetail {...props}></VideoDetail>}
           ></Route>
         </Switch>
-      </Grid>
-    </Grid>
+      </BottomContainer>
+    </main>
   );
 }
+
+const BottomContainer = styled.section`
+  display: flex;
+  flex-direction: row;
+`;
 
 export default App;

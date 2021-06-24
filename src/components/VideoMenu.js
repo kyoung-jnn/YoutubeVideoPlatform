@@ -57,11 +57,16 @@ const VideoMenu = (props) => {
   });
 
   return (
-    <React.Fragment>
-      {videos.length != 0 ? renderVideoMenu : <Fragment></Fragment>}
-    </React.Fragment>
+    <VideosContainer container justify="space-around">
+      {videos.length !== 0 ? renderVideoMenu : <Fragment></Fragment>}
+    </VideosContainer>
   );
 };
+
+const VideosContainer = styled(Grid)`
+  width: 85%;
+  height: 100%;
+`;
 
 const VideoContainer = styled(Grid)`
   padding: 1.5rem;
