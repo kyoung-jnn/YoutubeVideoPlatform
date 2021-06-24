@@ -5,68 +5,64 @@ import axios from "axios";
 import SearchBar from "./components/SearchBar.js";
 import VideoDetail from "./components/VideoDetail_component/VideoDetail.js";
 import VideoMenu from "./components/VideoMenu.js";
+import SideBar from "./components/SideBar.js";
 
-async function axiosVideoList(){
-  const results = await axios.create({
-    baseURL: "https://www.googleapis.com/youtube/v3/",
-  }).get("/videos", {
-    params: {
-      part: "snippet,statistics,recordingDetails,contentDetails",
-      chart: "mostPopular",
-      maxResults: 12, // 가져올 동영상 개수
-      regionCode: "kr",
-      key: process.env.REACT_APP_YOUTUBE_API_KEY, // api 키
-    },
-  })
-  setMenuState({ ...menuState, videos: results.data.items });
-}
+async function axiosData(menuState, setMenuState) {
+  let channelList = [];
+  const videos = await axiosVideoList();
 
-async function axiosChannelList(){
-  console.log("채널 탐색");
-  var channelList = [];
-
-  menuState.videos.map((video) => {
-    let channelId = video.snippet.channelId;
+  videos.map((video) => {
+    const channelId = video.snippet.channelId;
     axios
       .create({
         baseURL: "https://www.googleapis.com/youtube/v3/",
       })
       .get("/channels", {
         params: {
-          part: "snippet",
-          id: { channelId },
-          key: "AIzaSyAWgs3aZE3PyX2p0tL776GoBgMt3XNx71M", // api 키
+          id: channelId,
+          part: "id,snippet",
+          key: process.env.REACT_APP_YOUTUBE_API_KEY, // api 키
         },
       })
-      .then((results) => {
-        channelList.push(results.data);
-        if (channelList.length == 12) {
-          console.log("채널 저장", channelList);
-          setMenuState({ ...menuState, channels: channelList });
+      .then((channel) => {
+        channelList.push(channel);
+        if (channelList.length === 12) {
+          setMenuState({ videos: videos, channels: channelList });
         }
       });
   });
 }
 
-function App() {
-  const [menuState, setMenuState] = useState({ videos: [], channels: [] }); // 비디오들 정보 전부 저장
-  const [currentVideo, setCurrentVideo] = useState(null); // id만 저장
+async function axiosVideoList() {
+  const videoData = await axios
+    .create({
+      baseURL: "https://www.googleapis.com/youtube/v3/",
+    })
+    .get("/videos", {
+      params: {
+        part: "snippet,statistics,recordingDetails,contentDetails",
+        chart: "mostPopular",
+        maxResults: 12, // 가져올 동영상 개수
+        regionCode: "kr",
+        key: process.env.REACT_APP_YOUTUBE_API_KEY, // api 키
+      },
+    });
+  return videoData.data.items;
+}
 
+function App() {
+  const [menuState, setMenuState] = useState({ videos: [], channels: [] });
   const history = useHistory();
 
   // VideoMenu에 인기 동영상 불러오기
   useEffect(() => {
-    console.log("비디오 탐색");
-    
-    axiosVideoList();
-    axiosChannelList();
+    axiosData(menuState, setMenuState);
   }, []);
 
   const handleBackToHome = () => {
     history.push(`/`);
   };
 
-  // 검색을 했을 때
   const handleSubmit = async (searchKeyword) => {
     history.push(`/`);
 
@@ -91,8 +87,7 @@ function App() {
 
   // 동영상을 클릭했을 때
   const handleClick = (clickVideoId) => {
-    setCurrentVideo(clickVideoId);
-    history.push(`/videoDetail?v=${clickVideoId}`);
+    history.push(`/watch?v=${clickVideoId}`);
   };
 
   return (
@@ -103,7 +98,10 @@ function App() {
           onSubmit={handleSubmit}
         ></SearchBar>
       </Grid>
+
       <Grid container justify="space-around">
+        <SideBar></SideBar>
+
         <Switch>
           <Route
             exact
@@ -111,6 +109,7 @@ function App() {
             render={(props) => (
               <VideoMenu
                 videos={menuState.videos}
+                channels={menuState.channels}
                 onClickVideo={handleClick}
                 {...props}
               ></VideoMenu>

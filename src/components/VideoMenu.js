@@ -1,60 +1,58 @@
-import React, { Fragment, useState } from "react";
-import { Typography, Grid, makeStyles, Avatar } from "@material-ui/core";
+import React, { Fragment } from "react";
+import { Typography, Grid, Avatar } from "@material-ui/core";
+import styled from "styled-components";
 
 const VideoMenu = (props) => {
   const videos = props.videos;
+  const channels = props.channels;
+
   const onClickVideo = props.onClickVideo;
 
-  const classes = useStyles();
-
-  const renderVideoMenu = videos.map((video) => {
+  const renderVideoMenu = videos.map((video, index) => {
     return (
-      <Grid item md={3} sm={4} xs={6}>
-        <div className={classes.video}>
-          <img
-            style={{ position: "relative", width: "100%", cursor: "pointer" }}
-            alt="thumbnail"
-            src={video.snippet.thumbnails.medium.url}
-            onMouseDown={() => {
-              if (typeof video.id === "object") {
-                onClickVideo(video.id.videoId);
-              } else {
-                onClickVideo(video.id);
-              }
-            }}
-          />
-          <Grid container xs className={classes.videoText}>
-            <Grid item xs={2}>
-              <Avatar></Avatar>
+      <VideoContainer item md={3} sm={4} xs={6}>
+        <VideoThumbnail
+          alt="thumbnail"
+          src={video.snippet.thumbnails.medium.url}
+          onMouseDown={() => {
+            if (typeof video.id === "object") {
+              onClickVideo(video.id.videoId);
+            } else {
+              onClickVideo(video.id);
+            }
+          }}
+        ></VideoThumbnail>
+        <VideoTextContainer container>
+          <VideoLeftContainer>
+            <Avatar
+              src={channels[index].data.items[0].snippet.thumbnails.medium.url}
+            ></Avatar>
+          </VideoLeftContainer>
+          <VideoRightContainer>
+            <Grid>
+              <VideoTitleText>{video.snippet.title}</VideoTitleText>
             </Grid>
-            <Grid item xs>
-              <Grid>
-                <Typography className={classes.videoTitleText}>
-                  {video.snippet.title}
-                </Typography>
-              </Grid>
-              <Grid style={{ marginTop: 10 }}>
-                <Typography
-                  style={{
-                    textAlign: "left",
-                  }}
-                  variant="subtitle2"
-                >
-                  {video.snippet.channelTitle}
-                </Typography>
-                <Typography
-                  style={{
-                    textAlign: "left",
-                  }}
-                  variant="subtitle2"
-                >
-                  조회수 {video.statistics.viewCount}
-                </Typography>
-              </Grid>
+            <Grid>
+              <Typography
+                style={{
+                  textAlign: "left",
+                }}
+                variant="subtitle2"
+              >
+                {video.snippet.channelTitle}
+              </Typography>
+              <Typography
+                style={{
+                  textAlign: "left",
+                }}
+                variant="subtitle2"
+              >
+                조회수 {video.statistics.viewCount}
+              </Typography>
             </Grid>
-          </Grid>
-        </div>
-      </Grid>
+          </VideoRightContainer>
+        </VideoTextContainer>
+      </VideoContainer>
     );
   });
 
@@ -65,26 +63,44 @@ const VideoMenu = (props) => {
   );
 };
 
-const useStyles = makeStyles((theme) => ({
-  video: {
-    marginTop: theme.spacing(3),
-    padding: theme.spacing(1),
-  },
-  videoTitleText: {
-    display: "-webkit-flex",
-    WebkitLineClamp: 2,
-    WebkitBoxOrient: "vertical",
+const VideoContainer = styled(Grid)`
+  padding: 1.5rem;
+`;
 
-    fontSize: 14,
-    height: "3em",
-    lineHeight: 1.5,
-    textAlign: "left",
-    fontWeight: "bold",
+const VideoTextContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  margin-top: 0.5rem;
+`;
 
-    overflow: "hidden",
-    textOverflow: "ellipsis",
-  },
-  videoText: {},
-}));
+const VideoLeftContainer = styled.div`
+  width: 3rem;
+`;
+
+const VideoThumbnail = styled.img`
+  position: relative;
+  width: 100%;
+  cursor: pointer;
+`;
+
+const VideoRightContainer = styled.div`
+  width: 100%;
+  padding-left: 0.5rem;
+`;
+
+const VideoTitleText = styled.span`
+  display: -webkit-flex;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  font-size: 14;
+  height: 3rem;
+  line-height: 1.5rem;
+  text-align: left;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  font-weight: bold;
+  font-family: "NanumBarunGothic", sans-serif;
+`;
 
 export default VideoMenu;

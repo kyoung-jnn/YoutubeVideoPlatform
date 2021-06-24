@@ -15,14 +15,14 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const VideoDetail = (props) => {
-  const [videos, setVideos] = useState([]);
   const [mainVideoId, setMainVideoId] = useState(null);
 
   useEffect(() => {
     const query = queryString.parse(props.location.search);
     const videoId = query.v;
+
     setMainVideoId(videoId);
-  });
+  }, []);
 
   const classes = useStyles();
   return (
@@ -38,6 +38,6 @@ const VideoDetail = (props) => {
       </Grid>
     </React.Fragment>
   );
-}
+};
 
 export default VideoDetail;
