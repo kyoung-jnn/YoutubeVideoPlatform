@@ -3,10 +3,10 @@ import { Paper, Typography, makeStyles } from "@material-ui/core";
 import axios from "axios";
 import YouTube from "react-youtube";
 
+import styled from "styled-components";
+
 const Video = (props) => {
   const [mainVideo, setMainVideo] = useState(null);
-
-  const classes = useStyles();
 
   useEffect(() => {
     if (props.mainVideoId != null) {
@@ -31,11 +31,6 @@ const Video = (props) => {
   }, [props.mainVideoId]);
 
   const opts = {
-    position: "absolute",
-    width: "100%",
-    height: "100%",
-    top: 0,
-    left: 0,
     playerVars: {
       autoplay: 0,
     },
@@ -45,7 +40,7 @@ const Video = (props) => {
   else {
     return (
       <React.Fragment>
-        <YouTube videoId={mainVideo.id} opts={opts} onReady={_onReady} />
+        <CustomYoutube videoId={mainVideo.id} opts={opts} onReady={_onReady} />
         {/* <Paper
           elevation={6}
           style={{
@@ -89,15 +84,11 @@ const Video = (props) => {
   }
 };
 
-const useStyles = makeStyles((theme) => ({
-  evaluationText: {
-    marginTop: 5,
-    marginBottom: 10,
-  },
-  nationText: {
-    marginTop: 10,
-    fontWeight: "bold",
-  },
-}));
-
+const CustomYoutube = styled(YouTube)`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+`;
 export default Video;

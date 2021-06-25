@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { makeStyles } from "@material-ui/core";
 import MainVideo from "./MainVideo.js";
 import SubVideo from "./SubVideo.js";
 import queryString from "query-string";
@@ -31,11 +30,9 @@ const VideoDetail = (props) => {
   );
 };
 
-const MainVideoContainer = styled.section`
+const MainVideoContainer = styled.div`
   position: relative;
   padding-bottom: 56.25%;
-  padding-top: 30px;
-  height: 0;
   overflow: hidden;
 `;
 
