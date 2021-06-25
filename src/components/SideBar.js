@@ -25,12 +25,13 @@ const SideBar = () => {
 };
 
 const SideBarContainer = styled.div`
-  width: 15%;
+  width: 15rem;
   height: ${window.innerHeight};
   background-color: #fff;
   border-top-right-radius: 2rem;
   border-end-end-radius: 2rem;
   box-shadow: 10px 10px 20px #f0f0f0, -10px -10px 20px #ffffff;
+  
 `;
 
 const SideMenu = styled.div`

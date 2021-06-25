@@ -31,7 +31,11 @@ const Video = (props) => {
   }, [props.mainVideoId]);
 
   const opts = {
+    position: "absolute",
     width: "100%",
+    height: "100%",
+    top: 0,
+    left: 0,
     playerVars: {
       autoplay: 0,
     },
@@ -41,15 +45,8 @@ const Video = (props) => {
   else {
     return (
       <React.Fragment>
-        <div>
-          <YouTube
-            videoId={mainVideo.id}
-            opts={opts}
-            onReady={_onReady}
-            style={{ display: "flex" }}
-          />
-        </div>
-        <Paper
+        <YouTube videoId={mainVideo.id} opts={opts} onReady={_onReady} />
+        {/* <Paper
           elevation={6}
           style={{
             padding: "20px",
@@ -82,7 +79,7 @@ const Video = (props) => {
               국가: {mainVideo.snippet.defaultAudioLanguage}
             </Typography>
           </div>
-        </Paper>
+        </Paper> */}
       </React.Fragment>
     );
   }

@@ -64,12 +64,12 @@ const VideoMenu = (props) => {
 };
 
 const VideosContainer = styled(Grid)`
-  width: 85%;
+  width: 100%;
   height: 100%;
 `;
 
 const VideoContainer = styled(Grid)`
-  padding: 1.5rem;
+  padding: 1rem;
 `;
 
 const VideoTextContainer = styled.div`

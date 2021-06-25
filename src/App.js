@@ -10,10 +10,57 @@ import VideoMenu from "./components/VideoMenu.js";
 import SideBar from "./components/SideBar.js";
 import { Fragment } from "react";
 
-async function axiosData(menuState, setMenuState) {
-  let channelList = [];
-  const videos = await axiosVideoList();
+async function axiosInitialData(setMenuState) {
+  await axiosPopularVideoList().then((videos) => {
+    axiosChannelList(videos, setMenuState);
+  });
+}
 
+async function axiosSearchData(searchKeyword, setMenuState) {
+  await axiosSearchVideoList(searchKeyword).then((videos) => {
+    axiosChannelList(videos, setMenuState);
+  });
+}
+
+async function axiosPopularVideoList() {
+  return axios
+    .create({
+      baseURL: "https://www.googleapis.com/youtube/v3/",
+    })
+    .get("/videos", {
+      params: {
+        part: "snippet,statistics,recordingDetails,contentDetails",
+        chart: "mostPopular",
+        maxResults: 12, // 가져올 동영상 개수
+        regionCode: "kr",
+        key: process.env.REACT_APP_YOUTUBE_API_KEY, // api 키
+      },
+    })
+    .then((videoData) => {
+      return videoData.data.items;
+    });
+}
+
+async function axiosSearchVideoList(searchKeyword) {
+  return axios
+    .create({
+      baseURL: "https://www.googleapis.com/youtube/v3/",
+    })
+    .get("/search", {
+      params: {
+        part: "snippet",
+        maxResults: 12, // 가져올 동영상 개수
+        key: process.env.REACT_APP_YOUTUBE_API_KEY, // api 키
+        q: searchKeyword,
+      },
+    })
+    .then((videoData) => {
+      return videoData.data.items;
+    });
+}
+
+async function axiosChannelList(videos, setMenuState) {
+  let channelList = [];
   videos.map((video) => {
     const channelId = video.snippet.channelId;
     axios
@@ -36,30 +83,13 @@ async function axiosData(menuState, setMenuState) {
   });
 }
 
-async function axiosVideoList() {
-  const videoData = await axios
-    .create({
-      baseURL: "https://www.googleapis.com/youtube/v3/",
-    })
-    .get("/videos", {
-      params: {
-        part: "snippet,statistics,recordingDetails,contentDetails",
-        chart: "mostPopular",
-        maxResults: 12, // 가져올 동영상 개수
-        regionCode: "kr",
-        key: process.env.REACT_APP_YOUTUBE_API_KEY, // api 키
-      },
-    });
-  return videoData.data.items;
-}
-
 function App() {
   const [menuState, setMenuState] = useState({ videos: [], channels: [] });
   const history = useHistory();
 
   // VideoMenu에 인기 동영상 불러오기
   useEffect(() => {
-    axiosData(menuState, setMenuState);
+    axiosInitialData(setMenuState);
   }, []);
 
   const handleBackToHome = () => {
@@ -69,23 +99,7 @@ function App() {
   const handleSubmit = (searchKeyword) => {
     history.push(`/`);
 
-    axios
-      .create({
-        baseURL: "https://www.googleapis.com/youtube/v3/",
-      })
-      .get("/search", {
-        params: {
-          part: "snippet",
-          maxResults: 12, // 가져올 동영상 개수
-          key: process.env.REACT_APP_YOUTUBE_API_KEY, // api 키
-          q: searchKeyword,
-        },
-      })
-      .then((results) => {
-        const list = results.data.items;
-
-        setMenuState(list);
-      });
+    axiosSearchData(searchKeyword, setMenuState);
   };
 
   // 동영상을 클릭했을 때
@@ -99,29 +113,27 @@ function App() {
         onGoHome={handleBackToHome}
         onSubmit={handleSubmit}
       ></SearchBar>
-      <BottomContainer>
-        <Switch>
-          <Route
-            exact
-            path="/"
-            render={(props) => (
-              <Fragment>
-                <SideBar></SideBar>
-                <VideoMenu
-                  videos={menuState.videos}
-                  channels={menuState.channels}
-                  onClickVideo={handleClick}
-                  {...props}
-                ></VideoMenu>
-              </Fragment>
-            )}
-          ></Route>
-          <Route
-            path="/watch"
-            render={(props) => <VideoDetail {...props}></VideoDetail>}
-          ></Route>
-        </Switch>
-      </BottomContainer>
+      <Switch>
+        <Route
+          exact
+          path="/"
+          render={(props) => (
+            <BottomContainer>
+              <SideBar></SideBar>
+              <VideoMenu
+                videos={menuState.videos}
+                channels={menuState.channels}
+                onClickVideo={handleClick}
+                {...props}
+              ></VideoMenu>
+            </BottomContainer>
+          )}
+        ></Route>
+        <Route
+          path="/watch"
+          render={(props) => <VideoDetail {...props}></VideoDetail>}
+        ></Route>
+      </Switch>
     </main>
   );
 }
