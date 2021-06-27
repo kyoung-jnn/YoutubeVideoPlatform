@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Paper, Grid, Typography } from "@material-ui/core";
+import { Paper, Typography } from "@material-ui/core";
 import axios from "axios";
+
+import styled from "styled-components";
 
 const SubVideo = (props) => {
   const setMainVideoId = props.setMainVideoId;
@@ -21,32 +23,36 @@ const SubVideo = (props) => {
         },
       })
       .then((results) => {
-        const videos = results.data.items
+        const videos = results.data.items;
         setSubVideo(videos);
       });
-  },[]);
+  }, []);
 
   const renderVideoList = subVideos.map((video) => {
     return (
-      <Grid>
-        <Paper style={{ cursor: "pointer" }}>
-          <img
-            style={{ width: "100%" }}
-            alt="thumbnail"
-            src={video.snippet.thumbnails.medium.url}
-            onMouseDown={() => setMainVideoId(video.id)}
-          />
-        </Paper>
-        <Paper style={{ padding: "5px", marginBottom: "20px" }}>
-          <Typography variant="caption" style={{ fontWeight:'bold' }}>
-            {video.snippet.title}
-          </Typography>
-        </Paper>
-      </Grid>
+      <Paper style={{ cursor: "pointer" }}>
+        <img
+          style={{ width: "100%" }}
+          alt="thumbnail"
+          src={video.snippet.thumbnails.medium.url}
+          onMouseDown={() => setMainVideoId(video.id)}
+        />
+
+        <Typography variant="caption" style={{ fontWeight: "bold" }}>
+          {video.snippet.title}
+        </Typography>
+      </Paper>
     );
   });
 
-  return <Grid container>{renderVideoList}</Grid>;
+  return <SubContainer>{renderVideoList}</SubContainer>;
 };
+
+const SubContainer = styled.section`
+  width: 200px;
+  @media (max-width: 960px) {
+    display: none;
+  }
+`;
 
 export default SubVideo;

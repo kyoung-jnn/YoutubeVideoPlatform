@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from "react";
-import { Grid } from "@material-ui/core";
+import React, { useState, useEffect, Fragment } from "react";
 import { Route, Switch, useHistory } from "react-router-dom";
 import axios from "axios";
 import styled from "styled-components";
@@ -8,7 +7,6 @@ import SearchBar from "./components/SearchBar.js";
 import VideoDetail from "./components/VideoDetail_component/VideoDetail.js";
 import VideoMenu from "./components/VideoMenu.js";
 import SideBar from "./components/SideBar.js";
-import { Fragment } from "react";
 
 async function axiosInitialData(setMenuState) {
   await axiosPopularVideoList().then((videos) => {
@@ -113,27 +111,29 @@ function App() {
         onGoHome={handleBackToHome}
         onSubmit={handleSubmit}
       ></SearchBar>
-      <Switch>
-        <Route
-          exact
-          path="/"
-          render={(props) => (
-            <BottomContainer>
-              <SideBar></SideBar>
-              <VideoMenu
-                videos={menuState.videos}
-                channels={menuState.channels}
-                onClickVideo={handleClick}
-                {...props}
-              ></VideoMenu>
-            </BottomContainer>
-          )}
-        ></Route>
-        <Route
-          path="/watch"
-          render={(props) => <VideoDetail {...props}></VideoDetail>}
-        ></Route>
-      </Switch>
+      <BottomContainer>
+        <Switch>
+          <Route
+            exact
+            path="/"
+            render={(props) => (
+              <Fragment>
+                <SideBar></SideBar>
+                <VideoMenu
+                  videos={menuState.videos}
+                  channels={menuState.channels}
+                  onClickVideo={handleClick}
+                  {...props}
+                ></VideoMenu>
+              </Fragment>
+            )}
+          ></Route>
+          <Route
+            path="/watch"
+            render={(props) => <VideoDetail {...props}></VideoDetail>}
+          ></Route>
+        </Switch>
+      </BottomContainer>
     </main>
   );
 }
@@ -141,6 +141,7 @@ function App() {
 const BottomContainer = styled.section`
   display: flex;
   flex-direction: row;
+  justify-content: center;
 `;
 
 export default App;

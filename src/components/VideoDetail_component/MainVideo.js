@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Paper, Typography, makeStyles } from "@material-ui/core";
+import { Paper, Typography } from "@material-ui/core";
 import axios from "axios";
 import YouTube from "react-youtube";
 
@@ -23,8 +23,6 @@ const Video = (props) => {
         })
         .then((result) => {
           const video = result.data.items[0];
-          console.log(video);
-
           setMainVideo(video);
         });
     }
@@ -39,43 +37,33 @@ const Video = (props) => {
   if (mainVideo == null) return <div>⏳...</div>;
   else {
     return (
-      <React.Fragment>
-        <CustomYoutube videoId={mainVideo.id} opts={opts} onReady={_onReady} />
-        {/* <Paper
-          elevation={6}
-          style={{
-            padding: "20px",
-          }}
-        >
-          <div style={{ width: "100%" }}>
-            <Typography style={{ fontWeight: "bold" }} variant="h5">
-              {mainVideo.snippet.title}
-            </Typography>
-            <Typography className={classes.evaluationText} align="right">
-              👍 {mainVideo.statistics.likeCount} 👎{" "}
-              {mainVideo.statistics.dislikeCount}
-            </Typography>
-            <Typography style={{ fontWeight: "bold" }} variant="h6">
-              {mainVideo.snippet.channelTitle}
-            </Typography>
-            <Typography>
-              조회수 {mainVideo.statistics.viewCount}회 | 게시일{" "}
-              {mainVideo.snippet.publishedAt.split("-")[0] +
-                mainVideo.snippet.publishedAt.split("-")[1] +
-                mainVideo.snippet.publishedAt.split("-")[2].split("T")[0]}
-            </Typography>
-
-            <Typography
-              className={classes.nationText}
-              color="secondary"
-              variant="h5"
-              align="right"
-            >
-              국가: {mainVideo.snippet.defaultAudioLanguage}
-            </Typography>
-          </div>
-        </Paper> */}
-      </React.Fragment>
+      <MainContainer>
+        <VideoContainer>
+          <CustomYoutube
+            videoId={mainVideo.id}
+            opts={opts}
+            onReady={_onReady}
+          />
+        </VideoContainer>
+        <VideoExplainContainer elevation={6}>
+          <Typography style={{ fontWeight: "bold" }} variant="h5">
+            {mainVideo.snippet.title}
+          </Typography>
+          <Typography align="right">
+            👍 {mainVideo.statistics.likeCount} 👎{" "}
+            {mainVideo.statistics.dislikeCount}
+          </Typography>
+          <Typography style={{ fontWeight: "bold" }} variant="h6">
+            {mainVideo.snippet.channelTitle}
+          </Typography>
+          <Typography>
+            조회수 {mainVideo.statistics.viewCount}회 | 게시일{" "}
+            {mainVideo.snippet.publishedAt.split("-")[0] +
+              mainVideo.snippet.publishedAt.split("-")[1] +
+              mainVideo.snippet.publishedAt.split("-")[2].split("T")[0]}
+          </Typography>
+        </VideoExplainContainer>
+      </MainContainer>
     );
   }
 
@@ -84,6 +72,19 @@ const Video = (props) => {
   }
 };
 
+const MainContainer = styled.section`
+  @media (min-width: 960px) {
+    width: 960px;
+  }
+`;
+
+const VideoContainer = styled.div`
+  position: relative;
+  padding-bottom: 56.25%;
+  overflow: hidden;
+  margin: 1rem;
+`;
+
 const CustomYoutube = styled(YouTube)`
   position: absolute;
   top: 0;
@@ -91,4 +92,11 @@ const CustomYoutube = styled(YouTube)`
   width: 100%;
   height: 100%;
 `;
+
+const VideoExplainContainer = styled(Paper)`
+  margin: 1rem;
+  padding: 0.7rem;
+`;
+
+
 export default Video;
