@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Paper, Typography } from "@material-ui/core";
+import { Typography } from "@material-ui/core";
 import axios from "axios";
 
 import styled from "styled-components";
@@ -30,18 +30,18 @@ const SubVideo = (props) => {
 
   const renderVideoList = subVideos.map((video) => {
     return (
-      <Paper style={{ cursor: "pointer" }}>
+      <SubVideoContainer>
         <img
-          style={{ width: "100%" }}
+          style={{ width: "50%" }}
           alt="thumbnail"
           src={video.snippet.thumbnails.medium.url}
           onMouseDown={() => setMainVideoId(video.id)}
         />
-
-        <Typography variant="caption" style={{ fontWeight: "bold" }}>
-          {video.snippet.title}
-        </Typography>
-      </Paper>
+        <SubVideoExplainContainer>
+          <VideoTitleText>{video.snippet.title}...</VideoTitleText>
+          <Typography>{video.snippet.channelTitle}</Typography>
+        </SubVideoExplainContainer>
+      </SubVideoContainer>
     );
   });
 
@@ -49,10 +49,38 @@ const SubVideo = (props) => {
 };
 
 const SubContainer = styled.section`
-  width: 200px;
+  width: 300px;
+  padding: 1rem;
   @media (max-width: 960px) {
     display: none;
   }
+`;
+
+const SubVideoContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  cursor: pointer;
+  margin-bottom: 0.5rem;
+`;
+
+const SubVideoExplainContainer = styled.div`
+  padding-left: 0.5rem;
+`;
+
+const VideoTitleText = styled.span`
+  display: -webkit-flex;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  font-size: 1rem;
+  height: 3rem;
+  line-height: 1.5rem;
+  text-align: left;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  font-weight: bold;
+  font-family: "NanumBarunGothic", sans-serif;
 `;
 
 export default SubVideo;

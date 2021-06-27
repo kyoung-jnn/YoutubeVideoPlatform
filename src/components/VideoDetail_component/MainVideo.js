@@ -76,6 +76,9 @@ const MainContainer = styled.section`
   @media (min-width: 960px) {
     width: 960px;
   }
+  @media (max-width: 960px) {
+    width: 100%;
+  }
 `;
 
 const VideoContainer = styled.div`
@@ -97,6 +100,5 @@ const VideoExplainContainer = styled(Paper)`
   margin: 1rem;
   padding: 0.7rem;
 `;
-
 
 export default Video;
