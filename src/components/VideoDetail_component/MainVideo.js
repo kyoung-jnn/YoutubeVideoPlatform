@@ -16,7 +16,7 @@ const Video = (props) => {
         })
         .get("/videos", {
           params: {
-            part: "snippet,statistics,recordingDetails",
+            part: "snippet,statistics",
             id: props.mainVideoId,
             key: process.env.REACT_APP_YOUTUBE_API_KEY, // api 키
           },

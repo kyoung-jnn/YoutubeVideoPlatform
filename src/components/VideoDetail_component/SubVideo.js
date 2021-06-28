@@ -5,6 +5,7 @@ import axios from "axios";
 import styled from "styled-components";
 
 const SubVideo = (props) => {
+  const mainVideoId = props.mainVideoId;
   const setMainVideoId = props.setMainVideoId;
   const [subVideos, setSubVideo] = useState([]);
 
@@ -13,29 +14,32 @@ const SubVideo = (props) => {
       .create({
         baseURL: "https://www.googleapis.com/youtube/v3/",
       })
-      .get("/videos", {
+      .get("/search", {
         params: {
           part: "snippet",
-          chart: "mostPopular",
-          videoCategoryId: 24,
           regionCode: "kr",
+          relatedToVideoId: mainVideoId,
+          maxResults: 7, // 가져올 동영상 개수
+          type: "video",
           key: process.env.REACT_APP_YOUTUBE_API_KEY, // api 키
         },
       })
       .then((results) => {
         const videos = results.data.items;
+        console.log(videos);
+
         setSubVideo(videos);
       });
   }, []);
 
-  const renderVideoList = subVideos.map((video) => {
+  const renderVideoList = subVideos.map((video, index) => {
     return (
-      <SubVideoContainer>
+      <SubVideoContainer key={index}>
         <img
-          style={{ width: "50%" }}
+          style={{ width: "150px" }}
           alt="thumbnail"
           src={video.snippet.thumbnails.medium.url}
-          onMouseDown={() => setMainVideoId(video.id)}
+          onMouseDown={() => setMainVideoId(video.id.videoId)}
         />
         <SubVideoExplainContainer>
           <VideoTitleText>{video.snippet.title}...</VideoTitleText>
@@ -65,6 +69,7 @@ const SubVideoContainer = styled.div`
 `;
 
 const SubVideoExplainContainer = styled.div`
+  width: 150px;
   padding-left: 0.5rem;
 `;
 
