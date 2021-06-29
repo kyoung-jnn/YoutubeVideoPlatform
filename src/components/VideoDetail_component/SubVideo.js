@@ -26,11 +26,10 @@ const SubVideo = (props) => {
       })
       .then((results) => {
         const videos = results.data.items;
-        console.log(videos);
-
+        console.log("서브 비디오 탐색", videos);
         setSubVideo(videos);
       });
-  }, []);
+  });
 
   const renderVideoList = subVideos.map((video, index) => {
     return (
