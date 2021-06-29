@@ -10,7 +10,7 @@ const VideoMenu = (props) => {
 
   const renderVideoMenu = videos.map((video, index) => {
     return (
-      <VideoContainer item md={3} sm={4} xs={6}>
+      <VideoContainer item md={3} sm={4} xs={6} key={index}>
         <VideoThumbnail
           alt="thumbnail"
           src={video.snippet.thumbnails.medium.url}

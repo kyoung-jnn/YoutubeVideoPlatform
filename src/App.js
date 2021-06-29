@@ -4,6 +4,7 @@ import axios from "axios";
 import styled from "styled-components";
 
 import SearchBar from "./components/SearchBar.js";
+import Home from "./components/Home.js";
 import VideoDetail from "./components/VideoDetail_component/VideoDetail.js";
 import VideoMenu from "./components/VideoMenu.js";
 import SideBar from "./components/SideBar.js";
@@ -96,7 +97,6 @@ function App() {
 
   const handleSubmit = (searchKeyword) => {
     history.push(`/`);
-
     axiosSearchData(searchKeyword, setMenuState);
   };
 
@@ -116,6 +116,15 @@ function App() {
           <Route
             exact
             path="/"
+            render={(props) => (
+              <Fragment>
+                <SideBar></SideBar>
+                <Home></Home>
+              </Fragment>
+            )}
+          ></Route>
+          <Route
+            path="/watch"
             render={(props) => (
               <Fragment>
                 <SideBar></SideBar>

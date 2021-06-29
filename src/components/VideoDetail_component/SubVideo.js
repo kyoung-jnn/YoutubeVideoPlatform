@@ -20,13 +20,11 @@ const SubVideo = (props) => {
           regionCode: "kr",
           relatedToVideoId: mainVideoId,
           maxResults: 7, // 가져올 동영상 개수
-          type: "video",
           key: process.env.REACT_APP_YOUTUBE_API_KEY, // api 키
         },
       })
       .then((results) => {
         const videos = results.data.items;
-        console.log("서브 비디오 탐색", videos);
         setSubVideo(videos);
       });
   });
